@@ -11,11 +11,9 @@ Run `npm install` and `bower install`
 
 Run `grunt` for building and `grunt serve` for preview.
 
-## Ship and run  with Docker 
+## Ship and run with Docker 
 
-Run `docker build -t shelbert/capeint-webapp:1.0 .` to package app as a docker image
-Run `docker run -p80:80 shelbert/capeint-webapp:1.0 ` to package app as a docker image
-
+Run `docker build -t capeint-webapp .` to package app as a docker image and `docker run -p80:80 capeint-webapp` to run the docker container (available at http://localhost:80)
 
 ## Testing
 
