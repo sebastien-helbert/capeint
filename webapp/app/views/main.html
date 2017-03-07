@@ -1,0 +1,31 @@
+<div style="text-align: center" ng-if="mqtt && mqtt.connecting" ng-cloak>
+  Connexion en cours...
+</div>
+<form ng-if="mqtt && mqtt.connected && !mqtt.connecting" ng-cloak>
+  <div class="form-group">
+    <label>Vitesse</label>
+    <ion-range-slider min="-550" max="-1" from="speed" to="speed" hide-min-max="true" hide-from-to="true" on-finish="updateSpeed"></ion-range-slider>
+  </div>
+  <div class="form-group">
+    <label>Luminosité</label>
+    <ion-range-slider min="0" max="60" from="brightness" to="brightness" hide-min-max="true" hide-from-to="true" on-finish="updateBrightness"></ion-range-slider>
+  </div>
+  <div class="form-group">
+    <label>Première teinte</label>
+    <p>
+      <material-picker ng-model="color1" size="15" change="changeColor(color, 'color1')" ></material-picker>
+    </p>
+  </div>
+  <div class="form-group">
+    <label>Seconde teinte</label>
+    <p>
+      <material-picker ng-model="color2" size="15" change="changeColor(color, 'color2')" ></material-picker>
+    </p>
+  </div>
+  <div class="form-group">
+    <label>Troisième teinte</label>
+    <p>
+      <material-picker ng-model="color3" size="15" change="changeColor(color, 'color3')" ></material-picker>
+    </p>
+  </div>
+</form>

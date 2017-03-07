@@ -1,0 +1,19 @@
+version: '2'
+services:
+  mqtt:
+    image: toke/mosquitto
+    stdin_open: true
+    tty: true
+    ports:
+    - 1883:1883/tcp
+    - 9001:9001/tcp
+    labels:
+      io.rancher.container.pull_image: always
+  capeint-webapp:
+    image: shelbert/capeint-webapp
+    stdin_open: true
+    tty: true
+    ports:
+    - 8085:80/tcp
+    labels:
+      io.rancher.container.pull_image: always
