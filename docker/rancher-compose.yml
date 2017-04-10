@@ -1,8 +1,0 @@
-version: '2'
-services:
-  mqtt:
-    scale: 1
-    start_on_create: true
-  capeint-webapp:
-    scale: 1
-    start_on_create: true
