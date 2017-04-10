@@ -431,9 +431,12 @@ module.exports = function (grunt) {
       options: {
         stderr: true
       },
-      target: {
-        command: 'echo Building docker image "shelbert/capeint-webapp:' + pkg.version + '", shelbert/capeint-webapp:latest&&docker build -t shelbert/capeint-webapp:latest -t shelbert/capeint-webapp:' + pkg.version + ' .'
-      },
+		target: {
+			command: 'echo Building docker image "shelbert/capeint-webapp:' + pkg.version + '", shelbert/capeint-webapp:latest&&docker build -t shelbert/capeint-webapp:latest -t shelbert/capeint-webapp:' + pkg.version + ' .'
+		},
+		deploy: {
+			command: 'echo Deploy docker image "shelbert/capeint-webapp:' + pkg.version + '" && docker push shelbert/capeint-webapp:' + pkg.version + ' && echo Deploy docker image "shelbert/capeint-webapp:latest" && docker push shelbert/capeint-webapp:' + pkg.version
+		}
     }
   });
 
@@ -491,4 +494,8 @@ module.exports = function (grunt) {
     'build',
     'shell'
   ]);
+
+	grunt.registerTask('deploy', [
+		'shell:deploy'
+	]);
 };
