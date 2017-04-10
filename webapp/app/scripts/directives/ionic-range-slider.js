@@ -1,3 +1,5 @@
+'use strict';
+
 /**
  * @Author: Geoffrey Bauduin <bauduin.geo@gmail.com>
  */
@@ -99,13 +101,18 @@ angular.module("guirlandeApp").directive("ionRangeSlider", ['$timeout',
                         $scope.$apply(function () {
                             $scope.from = a.from;
                             $scope.to = a.to;
+							$scope.onChange({
+								a: a
+							});
+							/*
                             $scope.onChange && $scope.onChange({
                                 a: a
                             });
+                            */
                         });
                     },
                     onFinish: function () {
-                      $timeout(function(){ $scope.$apply($scope.onFinish())});
+                      $timeout(function(){ $scope.$apply($scope.onFinish());});
                     },
                 });
                 var watchers = [];
@@ -141,7 +148,7 @@ angular.module("guirlandeApp").directive("ionRangeSlider", ['$timeout',
                     });
                 }));
             }
-        }
+        };
 
     }
-])
+]);

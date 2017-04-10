@@ -377,13 +377,13 @@ angular.module('guirlandeApp')
       };
       var cToHex = function (c) {
         var hex = c.toString(16);
-        return hex.length == 1 ? "0" + hex : hex;
+        return hex.length === 1 ? "0" + hex : hex;
       };
       var rgbToHex = function (r, g, b) {
         return "#" + cToHex(r) + cToHex(g) + cToHex(b);
       };
       var h = function (c) {
-        if (c == '') { return 0; }
+        if (c === '') { return 0; }
         var t = parseInt(c);
         return t >= 0 && t <= 255 ? t : 0;
       };
@@ -391,7 +391,7 @@ angular.module('guirlandeApp')
         if(!(hex)) { return ''; }
         for (var i = 0; i < 19; i++) {
           for (var j = 0; j < swatches[i].colors.length; j++) {
-            if (swatches[i].colors[j].hex == hex.replace('#', '')) {
+            if (swatches[i].colors[j].hex === hex.replace('#', '')) {
               return swatches[i].camel + swatches[i].colors[j].name;
             }
           }
@@ -441,7 +441,7 @@ angular.module('guirlandeApp')
           container.on('mouseenter', function () {
             angular.element(window.document).off('mouseup', mouseup);
           });
-          var action = function (color, apply) {
+          var action = function (color) {
             selection[state.selected.x][state.selected.y].ele.removeClass('selected');
             state.selected.color = color.hex;
             state.selected.x = color.x;
@@ -454,33 +454,33 @@ angular.module('guirlandeApp')
               $scope.change({color: viewValue});
             } else {
               var rgb = hexToRgb(color.hex);
-              var viewValue = {
+              var viewValue2 = {
                 hex: '#' + color.hex,
                 name: camel + color.name,
                 r: rgb.r, g: rgb.g, b: rgb.b
               };
-              ngModel.$setViewValue(viewValue);
-              $scope.change({color: viewValue});
+              ngModel.$setViewValue(viewValue2);
+              $scope.change({color: viewValue2});
             }
             state.ignore = true;
             selection[color.x][color.y].ele.addClass('selected');
 
           };
           var isHex = function (hex) {
-            if (typeof hex == 'undefined') { return null; }
+            if (typeof hex === 'undefined') { return null; }
             return hex.match(/^#([0-9A-F]{6})$/i);
-          }
+          };
           var selectColor = function (hex) {
 
             hex = hex.toUpperCase();
-            var m = null;
-            if (m = isHex(hex)) {
+            var m = isHex(hex);
+            if (m) {
               selection[state.selected.x][state.selected.y].ele.removeClass('selected');
               outer:
                 for (var i = 0; i < swatches.length; i++) {
                   inner:
                     for (var j = 0; j < swatches[i].colors.length; j++) {
-                      if (swatches[i].colors[j].hex == m[1]) {
+                      if (swatches[i].colors[j].hex === m[1]) {
                         selection[i][j].ele.addClass('selected');
                         state.selected.x = i;
                         state.selected.y = j;
@@ -528,9 +528,7 @@ angular.module('guirlandeApp')
               })(swatches[i].colors[j]));
               row.on('mouseover', (function (color) {
                 return function () {
-                  if (!state.mousedown
-                    || (color.x === state.selected.x
-                    && color.y === state.selected.y)) { return; }
+                  if (!state.mousedown || (color.x === state.selected.x && color.y === state.selected.y)) { return; }
                   action(color);
                 };
               })(swatches[i].colors[j]));
@@ -557,7 +555,7 @@ angular.module('guirlandeApp')
           white.on('mouseover', (function (swatch, color) {
             return function () {
               if (attrs.hoverModel) {
-                var model = $parse(attrs.hoverModel)
+                var model = $parse(attrs.hoverModel);
                 model.assign($scope.$parent, {
                   hex: '#' + color.hex,
                   name: swatch.camel + color.name,
@@ -565,9 +563,7 @@ angular.module('guirlandeApp')
                 });
                 $scope.$parent.$apply();
               }
-              if (!state.mousedown
-                || (color.x === state.selected.x
-                && color.y === state.selected.y)) { return; }
+              if (!state.mousedown || (color.x === state.selected.x && color.y === state.selected.y)) { return; }
               action(color);
             };
           })(swatches[19], swatches[19].colors[0]));
@@ -592,7 +588,7 @@ angular.module('guirlandeApp')
           black.on('mouseover', (function (swatch, color) {
             return function () {
               if (attrs.hoverModel) {
-                var model = $parse(attrs.hoverModel)
+                var model = $parse(attrs.hoverModel);
                 model.assign($scope.$parent, {
                   hex: '#' + color.hex,
                   name: swatch.camel + color.name,
@@ -600,9 +596,7 @@ angular.module('guirlandeApp')
                 });
                 $scope.$parent.$apply();
               }
-              if (!state.mousedown
-                || (color.x === state.selected.x
-                && color.y === state.selected.y)) { return; }
+              if (!state.mousedown || (color.x === state.selected.x && color.y === state.selected.y)) { return; }
               action(color);
             };
           })(swatches[19], swatches[19].colors[1]));
@@ -612,7 +606,7 @@ angular.module('guirlandeApp')
           var format = $parse(attrs.format);
           var watch = format() === 'hex' ? '$watch' : '$watchCollection';
           $scope.$parent[watch](attrs.ngModel, function (value, oldValue) {
-            if (typeof value == 'undefined') { return; }
+            if (typeof value === 'undefined') { return; }
             if(!value.hex) {
               value.hex = rgbToHex(
                 h(value.r) || 0,
@@ -626,14 +620,12 @@ angular.module('guirlandeApp')
               }
               var color = hexToRgb(value.hex);
               if (color) {
-                if ((value.r == color.r || typeof value.r == 'undefined')
-                  && (value.g == color.g || typeof value.g == 'undefined')
-                  && (value.b == color.b || typeof value.b == 'undefined')) {
-                  if (value.r != '') { value.r = color.r; }
-                  if (value.g != '') { value.g = color.g; }
-                  if (value.b != '') { value.b = color.b; }
+                if ((value.r === color.r || typeof value.r === 'undefined') && (value.g === color.g || typeof value.g === 'undefined') && (value.b === color.b || typeof value.b === 'undefined')) {
+                  if (value.r !== '') { value.r = color.r; }
+                  if (value.g !== '') { value.g = color.g; }
+                  if (value.b !== '') { value.b = color.b; }
                 } else {
-                  if (value.hex != oldValue.hex) {
+                  if (value.hex !== oldValue.hex) {
                     value.r = color.r;
                     value.g = color.g;
                     value.b = color.b;

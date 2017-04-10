@@ -1,5 +1,8 @@
 'use strict';
 
+/* global Paho */
+
+
 /**
  * @ngdoc function
  * @name guirlandeApp.controller:MainCtrl
@@ -26,7 +29,7 @@ angular.module('guirlandeApp')
       connected: false,
       connecting: false,
       everConnected: false
-    }
+    };
 
     function reconnect() {
       disconnect();
@@ -42,7 +45,7 @@ angular.module('guirlandeApp')
       client.connect({
         onSuccess: onConnect, // after connected, subscribes
         onFailure: function () {
-          console.error(arguments)
+          console.error(arguments);
         }     // useful for logging / debugging
       });
       $scope.mqtt.connecting = true;
@@ -51,7 +54,7 @@ angular.module('guirlandeApp')
     function getClientId() {
       var id;
       try {
-        id = localStorage['mqtt-id']
+        id = localStorage['mqtt-id'];
       } catch (e) {
       }
       if (!id) {
@@ -76,7 +79,7 @@ angular.module('guirlandeApp')
       $scope.mqtt.connecting = false;
     }
 
-    function onConnect(context) {
+    function onConnect() {
       console.info("Client Connected");
       $scope.mqtt.connecting = false;
       $scope.mqtt.connected = true;
@@ -104,14 +107,14 @@ angular.module('guirlandeApp')
       $log.debug('New message received from topic [' + message.destinationName + '] : ' + message.payloadString);
 
       if (message.destinationName === 'color1') {
-        var splittedPayload = message.payloadString.split(',');
-        $scope.color1 = {r : splittedPayload[0], g : splittedPayload[1], b : splittedPayload[2]};
+        var splittedPayload1 = message.payloadString.split(',');
+        $scope.color1 = {r : splittedPayload1[0], g : splittedPayload1[1], b : splittedPayload1[2]};
       } else if (message.destinationName === 'color2') {
-        var splittedPayload = message.payloadString.split(',');
-        $scope.color2 = {r : splittedPayload[0], g : splittedPayload[1], b : splittedPayload[2]};
+        var splittedPayload2 = message.payloadString.split(',');
+        $scope.color2 = {r : splittedPayload2[0], g : splittedPayload2[1], b : splittedPayload2[2]};
       } else if (message.destinationName === 'color3') {
-        var splittedPayload = message.payloadString.split(',');
-        $scope.color3 = {r : splittedPayload[0], g : splittedPayload[1], b : splittedPayload[2]};
+        var splittedPayload3 = message.payloadString.split(',');
+        $scope.color3 = {r : splittedPayload3[0], g : splittedPayload3[1], b : splittedPayload3[2]};
       } else if (message.destinationName === 'speed') {
         $scope.speed = parseInt(message.payloadString, 10);
       } else if (message.destinationName === 'brightness') {
@@ -138,6 +141,6 @@ angular.module('guirlandeApp')
 
     $scope.updateBrightness = function (slider) {
      sendMessage('brightness', slider.from);
-    }
+    };
 
 }]);
