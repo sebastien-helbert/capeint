@@ -16,7 +16,7 @@ module.exports = function (grunt) {
   require('jit-grunt')(grunt, {
     useminPrepare: 'grunt-usemin',
     ngtemplates: 'grunt-angular-templates',
-    cdnify: 'grunt-google-cdn'
+	  cdnify: 'grunt-google-cdn'
   });
 
   // Configurable paths for the application
@@ -25,7 +25,9 @@ module.exports = function (grunt) {
     dist: 'dist'
   };
 
-  // Define the configuration for all the tasks
+  var pkg = require('./package.json');
+
+	// Define the configuration for all the tasks
   grunt.initConfig({
 
     // Project settings
@@ -423,6 +425,15 @@ module.exports = function (grunt) {
         configFile: 'test/karma.conf.js',
         singleRun: true
       }
+    },
+
+    shell: {
+      options: {
+        stderr: true
+      },
+      target: {
+        command: 'echo Building docker image "shelbert/capeint-webapp:' + pkg.version + '", shelbert/capeint-webapp:latest&&docker build -t shelbert/capeint-webapp:latest -t shelbert/capeint-webapp:' + pkg.version + ' .'
+      },
     }
   });
 
@@ -476,8 +487,8 @@ module.exports = function (grunt) {
 
   grunt.registerTask('default', [
     'newer:jshint',
-    'newer:jscs',
-    'test',
-    'build'
+//    'test',
+    'build',
+    'shell'
   ]);
 };
